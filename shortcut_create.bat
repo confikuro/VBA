@@ -3,39 +3,51 @@ cscript.exe //nologo //E:JScript "%~f0" %*
 goto :EOF
 @end
 
-// ƒƒCƒ“ˆ—
+//ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆç”¨ä½œæˆç”¨ã‚¯ãƒ©ã‚¹
+var ShortcutCreater = function() {
+    this.wshObj = openWsh();
+    //JavaScriptã§ãƒãƒƒã‚¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’è¡¨ç¾ã™ã‚‹ãŸã‚ã«ã¯ã€"\"ã‚’ä»˜ã‘ï¼ˆ2ã¤ã«ã—ã¦ï¼‰ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã‚‹å¿…è¦ã‚ã‚Šï¼ˆã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆåã ã‘ï¼‰
+    this.shortcutfile = 'C:\\Users\\Confi\\Documents\\cre\\  test.lnk';
+    this.link = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe';
+    this.icon = 'C:\Users\Confi\Documents\obake.ico';
+    this.create = createShortcut;
+    this.cleanup = closeWsh;
+    this.toString = createrToString;
+}
+
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 function main() {
     var shortcut = null;
+
     try {
-        // ƒVƒ‡[ƒgƒJƒbƒgì¬
+        // ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆä½œæˆ
         shortcut = new ShortcutCreater();
         shortcut.create();
 
-        // ì¬‚µ‚½ƒVƒ‡[ƒgƒJƒbƒg‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í‚·‚é
-        Console.println("ƒVƒ‡[ƒgƒJƒbƒg‚ğì¬‚µ‚Ü‚µ‚½");
-        Console.println(shortcut);ZXZZZ
+        // ä½œæˆã—ãŸã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+        Console.println("ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚’ä½œæˆã—ã¾ã—ãŸ");
+        Console.println(shortcut);
 
     } catch (e) {
 
-        // —áŠOŒ´ˆö‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í‚·‚é
-        Console.println("[ƒGƒ‰[]: " + e.description);
-        Console.println("g—p•û–@: shortcut.bat [filepath] [linkpath]");
+        // ã‚¨ãƒ©ãƒ¼è¦å› ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+        Console.println("[ã‚¨ãƒ©ãƒ¼]: " + e.description);
 
-        // ˆÙíI—¹‚ÅƒRƒ}ƒ“ƒh‚ğ•Ô‚·
+        // ç•°å¸¸çµ‚äº†ã§ã‚³ãƒãƒ³ãƒ‰ã‚’è¿”ã™
         Console.back(e.number);
 
     } finally {
 
-        // WSHƒIƒuƒWƒFƒNƒg‚ğ•Ğ•t‚¯‚é
+        // WSHã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç‰‡ä»˜ã‘
         if (shortcut !== null)
             shortcut.cleanup();
     }
 
-    // ³íI—¹‚ÅƒRƒ}ƒ“ƒh‚ğ•Ô‚·
+    // æ­£å¸¸çµ‚äº†ã§ã‚³ãƒãƒ³ãƒ‰ã‚’è¿”ã™
     Console.back(0);
 }
 
-// ƒRƒ“ƒ\[ƒ‹”Ä—pƒNƒ‰ƒX
+// Windows Script Hostå®Ÿè¡Œç”¨ã‚¯ãƒ©ã‚¹
 var Console = ((function() {
     var constructor = function() {}
     constructor.println = echoConsole;
@@ -43,43 +55,17 @@ var Console = ((function() {
     return constructor;
 })())
 
-// ƒVƒ‡[ƒgƒJƒbƒg‚ğì‚éƒNƒ‰ƒX
-var ShortcutCreater = function() {
-    var args = WScript.Arguments;
-    validate(args);
-    this.wshObj = openWsh();
-    this.shortcutfile = 'C:\Users\Confi\Documents\cre\@ test.lnk';
-    this.link = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe';
-    this.icon = 'C:\Program Files (x86)\teraterm\cyglaunch.exe'
-    this.create = createShortcut;
-    this.cleanup = closeWsh;
-    this.toString = createrToString;
-}
+// é–¢æ•°ä¸€è¦§
 
-// ----- ˆÈ~ŠÖ”ŒQ -------
-
-/*
-function validate(args) {
-    if (args == null) {
-        throw new Error(1, "args=null or undefined");
-    }
-    if (args.length !== 2) {
-        var str = "args = ";
-        for (i=0; i < args.length; i++)
-            str += "[" + i + "]:" + args(i) + " ";
-        throw new Error(2, str);
-    }
-}
-*/
 function createShortcut() {
     var lnkFile = this.wshObj.CreateShortcut(this.shortcutfile);
     lnkFile.TargetPath = this.link;
-    lnkFile.IconLocation = this.icon;
+    lnkFile.IconLocation = this.icon;    
     lnkFile.Save();
 }
 
 function createrToString() {
-    return "file=\"" + this.file + "\", linkTo=\"" + this.link + "\"";
+    return "file=\"" + this.shortcutfile + "\", linkTo=\"" + this.link + "\"";
 }
 
 function openWsh() {
@@ -98,5 +84,5 @@ function exitScript(errNum) {
     WScript.Quit(errNum);
 }
 
-// ƒƒCƒ“ˆ—ŒÄ‚Ño‚µ
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†å‘¼ã³å‡ºã—
 main();
